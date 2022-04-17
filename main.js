@@ -45,25 +45,15 @@ $(function () {
     });
   };
 
-  const messageNumber = (number) => {
-    fetch(
-      "https://api.twilio.com/2010-04-01/Accounts/ACfd3aee3f2f75dd38ded4d3d6f075b040/Messages.json?Body=Pistol Detected&From=+14302555191&To=+1" +
-        number,
-      {
-        headers: {
-          Authorization:
-            "Basic " +
-            btoa(
-              "ACfd3aee3f2f75dd38ded4d3d6f075b040" +
-                ":" +
-                "aafd5876f07e11c5949ba2d49b2d4c62"
-            ),
-        },
-        method: "POST",
-      }
-    );
+  const messageNumber = () => {
+    fetch("https://pistolnotify-9309-dev.twil.io/notify", {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
   };
-  messageNumber("2025944054");
 
   //addNumber(2025944054, "Camera 1");
 
@@ -204,6 +194,7 @@ $(function () {
 
   var prevTime;
   var pastFrameTimes = [];
+  var countdown = 0;
   const detectFrame = function () {
     if (!model) return requestAnimationFrame(detectFrame);
 
@@ -212,6 +203,14 @@ $(function () {
       .then(function (predictions) {
         requestAnimationFrame(detectFrame);
         renderPredictions(predictions);
+        if (predictions.length > 0) {
+          if (countdown == 1) messageNumber();
+          else if (countdown > 100) {
+            countdown = 0;
+          }
+          countdown = countdown + 1;
+          console.log(countdown);
+        }
 
         if (prevTime) {
           pastFrameTimes.push(Date.now() - prevTime);
