@@ -1,6 +1,6 @@
 # SchoolGuard
 ## About
-WebApp for identifying guns in schools using roboflow.com and alert administrators using twilio.
+WebApp for identifying guns in schools using roboflow.com and alert administrators using twilio. https://devpost.com/software/school-guard
 
 ## Tech
  - Roboflow: managing data and training neuralnetworks
